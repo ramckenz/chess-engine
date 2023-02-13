@@ -25,8 +25,8 @@ class GameState():
         #self.inCheck = False #come back to this later for better valid moves algorithm
         #self.pins = []
         #self.checks = []
-        self.checkMate = False
-        self.staleMate = False
+        self.checkmate = False
+        self.stalemate = False
         self.enpassantPossible = () #coordinates for the square where an en passant capture is possible.
         self.currentCastlingRight = CastleRights(True, True, True, True)
         self.castleRightsLog = [CastleRights(self.currentCastlingRight.wks,self.currentCastlingRight.bks,self.currentCastlingRight.wqs,self.currentCastlingRight.bqs)]
@@ -128,6 +128,9 @@ class GameState():
                     self.board[move.endRow][move.endCol - 2] = self.board[move.endRow][move.endCol + 1]
                     self.board[move.endRow][move.endCol + 1] = '--'
 
+            checkmate = False
+            stalemate = False
+
     '''
     All moves considering checks
     '''
@@ -153,12 +156,12 @@ class GameState():
             self.undoMove()
         if(len(moves) == 0):
             if self.inCheck():
-                self.checkMate = True
+                self.checkmate = True
             else:
-                self.staleMate = True
+                self.stalemate = True
         else:
-            self.checkMate = False
-            self.staleMate = False
+            self.checkmate = False
+            self.stalemate = False
         
         self.enpassantPossible = tempEnpassantPossible
         self.currentCastlingRight = tempCurrentCastleRights
