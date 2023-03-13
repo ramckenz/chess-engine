@@ -38,7 +38,7 @@ def main():
     sqSelected = () #no square initially selected
     playerClicks = [] # keep track of player clicks (two tuples, last two clicks)
     gameOver = False
-    playerOne = False #If a human is playing white, this is true. If an AI is playing, false.
+    playerOne = True #If a human is playing white, this is true. If an AI is playing, false.
     playerTwo = False #If a human is playing black, true. Else false.
     while running:
         humanTurn = (gs.whiteToMove and playerOne) or (not gs.whiteToMove and playerTwo)        
@@ -88,7 +88,9 @@ def main():
         
         #AI Move logic
         if not gameOver and not humanTurn:
-            AIMove = ChessAI.findRandomMove(validMoves)
+            AIMove = ChessAI.findBestMove(gs, validMoves)
+            if AIMove == None:
+                AIMove = ChessAI.findRandomMove(validMoves)
             gs.makeMove(AIMove)
             moveMade = True
             animate = True
@@ -108,7 +110,7 @@ def main():
             if gs.whiteToMove:
                 drawText(screen, 'Black wins by checkmate')
             else:
-                drawText(screen, 'Black wins by checkmate')
+                drawText(screen, 'White wins by checkmate')
         elif gs.stalemate:
             gameOver = True
             drawText(screen, 'Stalemate')
